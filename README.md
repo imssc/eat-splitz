@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# Eat & Split
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Eat & Split is a small React application for splitting a meal bill between friends.
 
-## Available Scripts
+The project was built to practice and demonstrate the fundamentals that make up a typical React application: component composition, local state, controlled forms, event handling, derived values, and communication between components.
 
-In the project directory, you can run:
+The UI is intentionally simple. The focus is on keeping the state predictable and the data flow easy to follow.
 
-### `npm start`
+## Live Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Coming soon
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## What it does
 
-### `npm test`
+* Add friends to the list
+* Select a friend to split a bill with
+* Enter the total bill and each person's share
+* Calculate the remaining amount automatically
+* Update the selected friend's balance
+* Keep the UI synchronized with the current application state
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Implementation
 
-### `npm run build`
+The application is built around a small set of focused React components. The main application component owns the state that needs to be shared, while child components receive the data and actions they need through props.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The general flow is:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```text
+User action
+    ↓
+Event handler
+    ↓
+State update
+    ↓
+React re-render
+    ↓
+Updated UI
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This keeps the data flow unidirectional and makes it relatively straightforward to understand where a particular change originates.
 
-### `npm run eject`
+### State
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The application uses React's `useState` for managing friends, the currently selected friend, and the bill-splitting workflow.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Rather than storing values that can be calculated from existing state, the application derives them when rendering or handling an action. This keeps the state model small and avoids unnecessary sources of truth.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Component communication
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Shared state lives at the appropriate parent level and is passed down through props.
 
-## Learn More
+Child components communicate user actions back to the parent through callback functions. This keeps components relatively focused while following React's one-way data flow model.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Forms
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The bill-splitting form uses controlled inputs. Form values are represented by React state, allowing the application to validate the input and calculate the resulting balances before updating the UI.
 
-### Code Splitting
+### Immutable updates
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Friend data is updated without directly mutating the existing state. New arrays and objects are created when state changes, allowing React to reliably detect updates and re-render the affected UI.
 
-### Analyzing the Bundle Size
+### Derived values
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The amount owed by each person is derived from the bill and the individual contributions rather than being maintained as separate state.
 
-### Making a Progressive Web App
+This is a small detail, but it keeps the application state easier to reason about and reduces the possibility of inconsistent values.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Project Structure
 
-### Advanced Configuration
+The project follows a simple component-based structure:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```text
+src/
+├── components/
+│   ├── Friend.js
+│   ├── FriendList.js
+│   ├── FormAddFriend.js
+│   └── FormSplitBill.js
+│
+├── App.js
+├── index.js
+└── index.css
+```
 
-### Deployment
+Each component has a relatively narrow responsibility, while `App` coordinates the state shared across the application.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Tech Stack
 
-### `npm run build` fails to minify
+* React
+* JavaScript (ES6+)
+* CSS
+* Create React App
+* Git / GitHub
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+No external state-management library is used. For an application of this size, React's local state and component composition are sufficient.
+
+## Running Locally
+
+Clone the repository:
+
+```bash
+git clone https://github.com/imssc/eat-splitz.git
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm start
+```
+
+The application will be available at `http://localhost:3000`.
+
+## Why I Built This
+
+This project is intentionally small.
+
+The goal wasn't to build another large application with a long list of dependencies. It was to get comfortable with the mechanics of React and understand how state, events, forms, and component communication work together in a real interactive UI.
+
+It also serves as a foundation for the more advanced React projects that follow it, where the same concepts can be applied with TypeScript, more complex state management, form libraries, validation, testing, and API-driven data.
+
