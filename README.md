@@ -1,6 +1,6 @@
-# Eat & Split
+# Eat-Splitz
 
-Eat & Split is a small React application for splitting a meal bill between friends.
+Eat-Splitz is a small React application for splitting a meal bill between friends.
 
 The project was built to practice and demonstrate the fundamentals that make up a typical React application: component composition, local state, controlled forms, event handling, derived values, and communication between components.
 
